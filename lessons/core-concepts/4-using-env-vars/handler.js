@@ -7,6 +7,9 @@
     Return the environment variable in the `foo` function response
 */
 module.exports.foo = (event, context, callback) => {
+  console.log('process.env.PROVIDER_KEY', process.env.PROVIDER_KEY)
+  /* MY_ENV_VAR_FOR_BAR will be undefined */
+  console.log('process.env.BAR_KEY', process.env.BAR_KEY)
   const response = {
     statusCode: 200,
     body: JSON.stringify({
@@ -16,7 +19,7 @@ module.exports.foo = (event, context, callback) => {
         /* Required for cookies, authorization headers with HTTPS */
         "Access-Control-Allow-Credentials" : true
       },
-      message: 'return env variable here'
+      message: process.env.PROVIDER_KEY
     }),
   }
   return callback(null, response)
@@ -29,6 +32,9 @@ module.exports.foo = (event, context, callback) => {
     Return the environment variable in the `bar` function response
 */
 module.exports.bar = (event, context, callback) => {
+  /* both env variables will be accessible in bar */
+  console.log('process.env.PROVIDER_KEY', process.env.PROVIDER_KEY)
+  console.log('process.env.BAR_KEY', process.env.BAR_KEY)
 
   const response = {
     statusCode: 200,
@@ -39,7 +45,8 @@ module.exports.bar = (event, context, callback) => {
         /* Required for cookies, authorization headers with HTTPS */
         "Access-Control-Allow-Credentials" : true
       },
-      message: 'return env variable here'
+      message: process.env.BAR_KEY
+
     }),
   }
   return callback(null, response)

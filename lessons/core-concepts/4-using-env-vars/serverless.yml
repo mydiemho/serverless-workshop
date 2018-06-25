@@ -5,6 +5,8 @@ service: using-env-variables-example
 provider:
   name: aws
   runtime: nodejs6.10
+  environment:
+    PROVIDER_KEY: "foobar"
 
 functions:
   foo:
@@ -13,9 +15,12 @@ functions:
       - http:
           path: foo
           method: get
+
   # Step 2. In this_file, add an environment variable to the `bar` function. Adding `environment` to the function level will scope the value to a single function. http://bit.ly/2yVp4CR #
   bar:
     handler: handler.bar
+    environment:
+      BAR_KEY: "bar"
     events:
       - http:
           path: bar

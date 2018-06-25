@@ -4,6 +4,17 @@ service: event-driven-app
 provider:
   name: aws
   runtime: nodejs6.10
+  environment:
+    # Here we reference the table name defined below. This is a cloud formation ref
+    # MY_TABLE is use in handler.js
+    # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html#w2ab2c21c10d381c15
+    MY_TABLE: { Ref: myDynamoTable }
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - dynamodb:PutItem
+      - dynamodb:Scan
+    Resource: { Fn::GetAtt: [ myDynamoTable, Arn ] }
   # Step 3. In this_file, add the database table name to the service's `environment` variables. The `aws-sdk` will need to know the table name in order to access the table
   # Step 2. In this_file, add a new IAM role the lambda function needs in order to access the newly created dynamoDB table.
 
@@ -25,3 +36,17 @@ functions:
 
 # Step 1. Add the DynamoDB CloudFormation in `readme.md` to the `resources` block of this_file #
 resources:
+  Resources:
+    myDynamoTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: 'id-table'
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

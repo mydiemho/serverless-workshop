@@ -17,3 +17,9 @@ functions:
     handler: handler.pathParamsExample
     # Step 4. In this_file, add 2 `http` GET events to trigger the `pathParamsExample` function. The first `path` should be `/` and the second should be `{name}`. See the http event docs: http://bit.ly/2yJui03 #
     events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: /{name}
+          method: get

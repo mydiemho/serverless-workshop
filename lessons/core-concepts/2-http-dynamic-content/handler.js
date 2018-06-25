@@ -33,11 +33,18 @@ module.exports.queryParamsExample = (event, context, callback) => {
     Finally, remember to set the headers of the response as `'Content-Type': 'text/html'` to return HTML instead of the default `json`
  */
 module.exports.pathParamsExample = (event, context, callback) => {
+  let name
+  if (event.pathParameters && event.pathParameters.name) {
+    name = event.pathParameters.name
+  }
+
+  const hello = greetPerson(name)
   const response = {
     statusCode: 200,
-    body: JSON.stringify({
-      message: generateHtmlPage(greetPerson("My Ho")),
-    }),
+    headers: {
+      'Content-Type': 'text/html'
+    },
+    body: generateHtmlPage(hello),
   }
   return callback(null, response)
 }

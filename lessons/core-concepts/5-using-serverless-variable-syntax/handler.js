@@ -1,5 +1,7 @@
 
 module.exports.foo = (event, context, callback) => {
+  console.log('process.env.MY_SECRET', process.env.MY_SECRET)
+
   const response = {
     statusCode: 200,
     body: JSON.stringify({

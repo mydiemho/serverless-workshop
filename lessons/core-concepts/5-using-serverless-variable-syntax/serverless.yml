@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: nodejs6.10
   environment:
-    MY_SECRET: xyz123
+    MY_SECRET: ${file(./secrets.${opt:stage}.json):MY_SECRET}
 
 functions:
   foo:
